@@ -1,4 +1,5 @@
 require("dotenv").config();
+var fs = require("fs")
 
 var axios = require('axios');
 
@@ -19,7 +20,7 @@ switch (action) {
         break;
 
     case "spotify-this-song":
-        spotify();
+        runSpotify(search);
         break;
 
     case "movie-this":
@@ -44,10 +45,10 @@ function concert() {
         .then(function (response) {
             var data = response.data
             console.log(data)
-            for (var i = 0; i < data.length; i++){
-            console.log("Name of the venue: " + data[i].venue.name);
-            console.log("City: " + data[i].venue.city);
-            console.log("Time of event: " + data[i].datetime);
+            for (var i = 0; i < data.length; i++) {
+                console.log("Name of the venue: " + data[i].venue.name);
+                console.log("City: " + data[i].venue.city);
+                console.log("Time of event: " + data[i].datetime);
             }
         })
         .catch(function (error) {
@@ -61,10 +62,14 @@ function concert() {
     console.log("concert", search)
 }
 
-function spotify() {
-
+function runSpotify(search) {
     spotify.search({ type: 'track', query: search })
         .then(function (response) {
+            var spotifyInfo = response.tracks.items
+            // console.log(response.tracks.items)
+            for (var i = 0; i < spotifyInfo.length; i++) {
+                console.log(spotifyInfo[i].album.artists.name[i])
+            }
         })
         .catch(function (err) {
             console.log(err);
@@ -75,20 +80,26 @@ function spotify() {
 function movie() {
     var omdbURL = "http://www.omdbapi.com/?apikey=trilogy&t=" + search;
     axios.get(omdbURL)
-    .then(function (response){
-        var movieData = response.data
+        .then(function (response) {
+            var movieData = response.data
 
-        console.log("Title: " + movieData.Title);
-        console.log("Year: " + movieData.Year);
-        console.log("imdb Rating: " + movieData.imdbRating);
-        console.log("Rotten Tomatoes Rating: " + movieData.Metascore);
-        console.log("Country: " + movieData.Country);
-        console.log("Language: " + movieData.Language);
-        console.log("Plot: " + movieData.Plot);
-        console.log("Actors: " + movieData.Actors);
-    })
+            console.log("Title: " + movieData.Title);
+            console.log("Year: " + movieData.Year);
+            console.log("imdb Rating: " + movieData.imdbRating);
+            console.log("Rotten Tomatoes Rating: " + movieData.Metascore);
+            console.log("Country: " + movieData.Country);
+            console.log("Language: " + movieData.Language);
+            console.log("Plot: " + movieData.Plot);
+            console.log("Actors: " + movieData.Actors);
+        })
 }
 
 function bossy() {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        }
+        runSpotify(data)
+    })
     console.log("do what it says")
 }
