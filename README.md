@@ -5,3 +5,6 @@ using a few APIS I am making a system that will pull the information and display
 8/13 as of today I have the majority of the calls working but still trying to figure out the spotify one
 I have am also working on cleaning up the response a bit so that it is not so cluttered and easy to read the information for the user.
 
+link to video :
+
+https://drive.google.com/file/d/1mIeB9aKzTUiOqUECzAP5ZPE-oaqTbvst/view
